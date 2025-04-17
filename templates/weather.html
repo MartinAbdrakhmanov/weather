@@ -1,0 +1,79 @@
+{{ define "title" }}Погода{{ end }}
+
+{{ define "content" }}
+<style>
+    .container {
+        display: flex;
+        gap: 2rem;
+        flex-wrap: wrap;
+    }
+
+    .left,
+    .right {
+        flex: 1;
+        min-width: 300px;
+    }
+</style>
+
+<div class="container">
+    <div class="left">
+        <!-- 🔸 Текущая погода -->
+        <h1>Погода в {{ .Location.Name }}, {{ .Location.Country }}</h1>
+        <p><strong>Сейчас:</strong> {{ .Current.TempC }}°C — {{ .Current.Condition.Text }}</p>
+        <img src="https:{{ .Current.Condition.Icon }}" alt="Погода иконка">
+
+        <!-- 🔸 Слайдер с почасовой погодой на ближайшие 12 часов -->
+        <h3>Почасовой прогноз</h3>
+        <div class="hourly-slider" style="display: flex; overflow-x: auto; gap: 1rem; padding-bottom: 1rem;">
+            {{ range $i, $hour := .HourWindow }}
+            {{ if lt $i 12 }} <!-- Показываем только первые 12 часов -->
+            <div style="min-width: 100px; text-align: center;">
+                <strong>{{ $hour.Time }}</strong><br>
+                {{ $hour.TempC }}°C<br>
+                <img src="https:{{ $hour.Condition.Icon }}" alt="иконка" style="width: 40px;"><br>
+                {{ $hour.Condition.Text }}
+            </div>
+            {{ end }}
+            {{ end }}
+        </div>
+    </div>
+    <div class="right">
+        <h2>Рекомендация по одежде</h2>
+        <div id="suggestion" style="white-space: pre-line;">
+            <p>Загружаем рекомендацию...</p>
+        </div>
+    </div>
+    <div class="days">
+        <!-- 🔸 Краткий прогноз на следующие дни -->
+        <h3>Прогноз на несколько дней</h3>
+        <div class="daily-summary" style="display: flex; gap: 1rem; flex-wrap: no-wrap;">
+            {{ range $i, $day := .Forecast.Forecastday }}
+            {{ if gt $i 0 }} <!-- Пропускаем первый день, он уже отображён выше -->
+            <div style="min-width: 140px; border: 1px solid #ccc; padding: 0.5rem; border-radius: 8px;">
+                <div style="white-space: pre-line;"><strong>{{ $day.WeekDay }}</strong><br></div>
+                <img src="https:{{ $day.Day.Condition.Icon }}" alt="иконка" style="width: 40px;"><br>
+                {{ $day.Day.Condition.Text }}<br>
+                Макс: {{ $day.Day.MaxtempC }}°C<br>
+                Мин: {{ $day.Day.MintempC }}°C
+            </div>
+            {{ end }}
+            {{ end }}
+        </div>
+    </div>
+
+    <script>
+
+        const city = " {{ .Location.Name }}"; fetch(`/suggestion?city=${encodeURIComponent(city)}`).then(res =>
+            res.json())
+            .then(data => {
+                document.getElementById("suggestion").innerHTML =
+                    `<p>${data.suggestion}</p>`;
+            })
+            .catch(err => {
+                console.error(err);
+                document.getElementById("suggestion").innerHTML =
+                    `<p>Не удалось загрузить рекомендацию.</p>`;
+            });
+    </script>
+</div>
+{{ end }}

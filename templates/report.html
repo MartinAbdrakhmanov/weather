@@ -1,0 +1,7 @@
+{{ define "title" }}Отчёт{{ end }}
+
+{{ define "content" }}
+<div>
+    {{ .ReportHTML | safeHTML }}
+</div>
+{{ end }}
