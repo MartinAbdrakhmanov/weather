@@ -15,6 +15,26 @@
     }
 </style>
 
+<div class="search">
+    <input type="text" id="cityInput" placeholder="Enter city" />
+    <button onclick="newDoc()">🔎</button>
+</div>
+
+<script>
+    function newDoc() {
+        const city = document.getElementById("cityInput").value.trim();
+        if (city) {
+            const cityPath = encodeURIComponent(city);
+            window.location.href = "/" + cityPath;
+        }
+    }
+    document.getElementById("cityInput").addEventListener("keypress", function (e) {
+        if (e.key === "Enter") {
+            newDoc();
+        }
+    });
+</script>
+
 <div class="container">
     <div class="left">
         <!-- 🔸 Текущая погода -->
@@ -26,7 +46,7 @@
         <h3>Почасовой прогноз</h3>
         <div class="hourly-slider" style="display: flex; overflow-x: auto; gap: 1rem; padding-bottom: 1rem;">
             {{ range $i, $hour := .HourWindow }}
-            {{ if lt $i 12 }} <!-- Показываем только первые 12 часов -->
+            {{ if lt $i 18 }} <!-- Показываем только первые 12 часов -->
             <div style="min-width: 100px; text-align: center;">
                 <strong>{{ $hour.Time }}</strong><br>
                 {{ $hour.TempC }}°C<br>

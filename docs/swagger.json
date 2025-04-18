@@ -1,0 +1,171 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "API provides current weather, forecast, and clothing suggestions based on forecast.",
+        "title": "Weather \u0026 Clothing Recommendation API",
+        "contact": {},
+        "version": "1.0"
+    },
+    "host": "localhost:8080",
+    "basePath": "/",
+    "paths": {
+        "/form": {
+            "get": {
+                "description": "Returns an HTML feedback form",
+                "produces": [
+                    "text/html"
+                ],
+                "tags": [
+                    "form"
+                ],
+                "summary": "Render feedback form",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/report": {
+            "get": {
+                "description": "Reads a markdown report and returns rendered HTML",
+                "produces": [
+                    "text/html"
+                ],
+                "tags": [
+                    "report"
+                ],
+                "summary": "Convert report markdown to HTML",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/submit": {
+            "post": {
+                "description": "Accepts feedback form data and returns it",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "text/plain"
+                ],
+                "tags": [
+                    "form"
+                ],
+                "summary": "Process feedback form submission",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User's surname",
+                        "name": "surname",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "User's name",
+                        "name": "name",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "User's patronymic",
+                        "name": "patronymic",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Service satisfaction rating",
+                        "name": "approval",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "User's suggestions",
+                        "name": "suggestions",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "User's email",
+                        "name": "email",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Form data received",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/suggestion": {
+            "get": {
+                "description": "Returns a clothing suggestion based on weather forecast",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "suggestion"
+                ],
+                "summary": "Get clothing suggestion for a city",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "City name",
+                        "name": "city",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            }
+        },
+        "/{city}": {
+            "get": {
+                "description": "Returns current weather and forecast for a given city",
+                "produces": [
+                    "text/html"
+                ],
+                "tags": [
+                    "weather"
+                ],
+                "summary": "Get weather and forecast for a city",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "City name",
+                        "name": "city",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        }
+    }
+}

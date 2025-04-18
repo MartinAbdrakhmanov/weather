@@ -1,0 +1,115 @@
+basePath: /
+host: localhost:8080
+info:
+  contact: {}
+  description: API provides current weather, forecast, and clothing suggestions based
+    on forecast.
+  title: Weather & Clothing Recommendation API
+  version: "1.0"
+paths:
+  /{city}:
+    get:
+      description: Returns current weather and forecast for a given city
+      parameters:
+      - description: City name
+        in: path
+        name: city
+        required: true
+        type: string
+      produces:
+      - text/html
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Not Found
+      summary: Get weather and forecast for a city
+      tags:
+      - weather
+  /form:
+    get:
+      description: Returns an HTML feedback form
+      produces:
+      - text/html
+      responses:
+        "200":
+          description: OK
+      summary: Render feedback form
+      tags:
+      - form
+  /report:
+    get:
+      description: Reads a markdown report and returns rendered HTML
+      produces:
+      - text/html
+      responses:
+        "200":
+          description: OK
+      summary: Convert report markdown to HTML
+      tags:
+      - report
+  /submit:
+    post:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: Accepts feedback form data and returns it
+      parameters:
+      - description: User's surname
+        in: formData
+        name: surname
+        required: true
+        type: string
+      - description: User's name
+        in: formData
+        name: name
+        required: true
+        type: string
+      - description: User's patronymic
+        in: formData
+        name: patronymic
+        type: string
+      - description: Service satisfaction rating
+        in: formData
+        name: approval
+        required: true
+        type: string
+      - description: User's suggestions
+        in: formData
+        name: suggestions
+        required: true
+        type: string
+      - description: User's email
+        in: formData
+        name: email
+        required: true
+        type: string
+      produces:
+      - text/plain
+      responses:
+        "200":
+          description: Form data received
+          schema:
+            type: string
+      summary: Process feedback form submission
+      tags:
+      - form
+  /suggestion:
+    get:
+      description: Returns a clothing suggestion based on weather forecast
+      parameters:
+      - description: City name
+        in: query
+        name: city
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+      summary: Get clothing suggestion for a city
+      tags:
+      - suggestion
+swagger: "2.0"
