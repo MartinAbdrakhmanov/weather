@@ -1,0 +1,160 @@
+body {
+    margin: 0;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f7fafd;
+    color: #333;
+    line-height: 1.6;
+}
+
+header,
+footer {
+    background-color: #e6f0fa;
+    padding: 1rem;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.8rem;
+    color: #1e3a5f;
+}
+
+nav {
+    margin-top: 0.5rem;
+}
+
+nav a {
+    text-decoration: none;
+    color: #1e90ff;
+    margin: 0 0.5rem;
+    transition: color 0.3s;
+}
+
+nav a:hover {
+    color: #0d6efd;
+}
+
+main {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+footer {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin-top: 1rem;
+}
+
+.left,
+.right {
+    flex: 1;
+    min-width: 300px;
+}
+
+.search {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    justify-content: center;
+}
+
+.search input {
+    padding: 0.5rem 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+    flex: 1;
+    max-width: 300px;
+    background-color: white;
+}
+
+.search button {
+    padding: 0.5rem 1rem;
+    background-color: #1e90ff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.search button:hover {
+    background-color: #0077cc;
+}
+
+.hourly-slider {
+    display: flex;
+    overflow-x: auto;
+    gap: 1rem;
+    padding: 1rem 0;
+}
+
+.hourly-slider div {
+    background-color: rgb(227, 237, 250);
+    border-radius: 12px;
+    padding: 0.5rem;
+    min-width: 100px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.daily-summary {
+    display: flex;
+    overflow-x: auto;
+    gap: 1rem;
+    padding: 1rem 0;
+}
+
+.daily-summary>div {
+    background-color: white;
+    padding: 1rem;
+    border-radius: 12px;
+    text-align: center;
+    min-width: 140px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.right #suggestion {
+    background-color: white;
+    padding: 1rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    white-space: pre-line;
+}
+
+img {
+    max-width: 100%;
+}
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .search {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .search input,
+    .search button {
+        width: 100%;
+    }
+}
+
+a.github-link {
+    color: #1e90ff;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+a.github-link:hover {
+    color: #0d6efd;
+}

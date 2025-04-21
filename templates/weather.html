@@ -1,0 +1,106 @@
+{{ define "title" }}Forecast{{ end }}
+
+{{ define "content" }}
+<style>
+    .container {
+        display: flex;
+        gap: 2rem;
+        flex-wrap: wrap;
+    }
+
+    .left,
+    .right {
+        flex: 1;
+        min-width: 300px;
+    }
+</style>
+
+<div class="search">
+    <input type="text" id="cityInput" placeholder="Enter city" />
+    <button onclick="newDoc()">🔎</button>
+</div>
+
+<script>
+    function newDoc() {
+        const city = document.getElementById("cityInput").value.trim();
+        if (city) {
+            const cityPath = encodeURIComponent(city);
+            window.location.href = "/" + cityPath;
+        }
+    }
+    document.getElementById("cityInput").addEventListener("keypress", function (e) {
+        if (e.key === "Enter") {
+            newDoc();
+        }
+    });
+</script>
+
+
+
+<div class="container">
+    <div class="left">
+        <h1>Weather in {{ .Location.Name }}, {{ .Location.Country }}</h1>
+        <p><strong>Current:</strong> {{ .Current.TempC }}°C — {{ .Current.Condition.Text }}</p>
+        <img src="https:{{ .Current.Condition.Icon }}" alt="weather icon">
+        <div class="currenweather">
+            Feels like: {{ .Current.Feelslike_c }}°C </br>
+            Wind speed: {{ .Current.Wind_kph }} kph </br>
+            Humidity: {{ .Current.Humidity }}% </br>
+        </div>
+
+
+        <h3></h3>
+        <div class="hourly-slider" style="display: flex; overflow-x: auto; gap: 1rem; padding-bottom: 1rem;">
+            {{ range $i, $hour := .HourWindow }}
+            {{ if lt $i 18 }}
+            <div style="min-width: 100px; text-align: center;">
+                <strong>{{ $hour.Time }}</strong><br>
+                {{ $hour.TempC }}°C<br>
+                <img src="https:{{ $hour.Condition.Icon }}" alt="иконка" style="width: 40px;"><br>
+                {{ $hour.Condition.Text }}
+            </div>
+            {{ end }}
+            {{ end }}
+        </div>
+    </div>
+    <div class="right">
+        <h2>Clothing recommendations</h2>
+        <div id="suggestion" style="white-space: pre-line;">
+            <p>Loading...</p>
+        </div>
+    </div>
+    <div class="days">
+        <h3></h3>
+        <div class="daily-summary" style="display: flex; gap: 1rem; flex-wrap: no-wrap;">
+            {{ range $i, $day := .Forecast.Forecastday }}
+            {{ if gt $i 0 }}
+            <div style="min-width: 140px; border: 1px solid #ccc; padding: 0.5rem; border-radius: 8px;">
+                <div style="white-space: pre-line;"><strong>{{ $day.WeekDay }}</strong><br></div>
+                <img src="https:{{ $day.Day.Condition.Icon }}" alt="icon" style="width: 40px;"><br>
+                {{ $day.Day.Condition.Text }}<br>
+                Max: {{ $day.Day.MaxtempC }}°C<br>
+                Min: {{ $day.Day.MintempC }}°C
+            </div>
+            {{ end }}
+            {{ end }}
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script>
+        const city = "{{ .Location.Name }}";
+
+        fetch(`/suggestion?city=${encodeURIComponent(city)}`)
+            .then(res => res.json())
+            .then(data => {
+                const markdown = data.suggestion;
+                const html = marked.parse(markdown);
+                document.getElementById("suggestion").innerHTML = html;
+            })
+            .catch(err => {
+                console.error(err);
+                document.getElementById("suggestion").innerHTML =
+                    `<p>Unable to load suggestions.</p>`;
+            });
+    </script>
+</div>
+{{ end }}
