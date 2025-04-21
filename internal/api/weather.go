@@ -12,7 +12,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
-// GetWeather handles GET /{city}
+
 func GetWeather(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	city := vars["city"]
